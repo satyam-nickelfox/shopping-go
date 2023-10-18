@@ -7,4 +7,8 @@ export class ProductService {
     const instance = NetworkManager(API.PRODUCT.ALLPRODUCT);
     return await instance.request();
   }
+  static async createCheckout(payload) {
+    const instance = NetworkManager(API.PRODUCT.CHECKOUT);
+    return await instance.request(payload);
+  }
 }

@@ -14,5 +14,6 @@ export const API = {
   },
   PRODUCT: {
     ALLPRODUCT: new APIRouter("/product/productlist", HTTP_METHODS.GET),
+    CHECKOUT: new APIRouter("/product/create-checkout-session", HTTP_METHODS.POST),
   },
 };

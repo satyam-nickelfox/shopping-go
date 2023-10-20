@@ -44,7 +44,12 @@ function Login() {
         })
       );
       setLoading(false);
-      navigate("/user/dashboard");
+      if(response?.data?.loginUser?.role === "user"){
+        navigate("/user/dashboard");
+      }
+      else {
+        navigate("/admin/dashboard");
+      }
     } else {
       setLoading(false);
       console.log("error");

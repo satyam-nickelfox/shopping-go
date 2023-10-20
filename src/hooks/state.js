@@ -14,6 +14,7 @@ export const useUserDetail = () => {
     userId: userDetail?._id,
     name: userDetail?.full_name,
     email: userDetail?.email,
+    role : userDetail?.role
   };
   return user;
 };

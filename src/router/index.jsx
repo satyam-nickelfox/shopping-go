@@ -3,10 +3,9 @@ import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "./routes";
 import PublicWrapper from "../hoc/PublicWrapper";
 import AuthWrapper from "../hoc/AuthWrapper";
-import { useIsLoggedIn,useUserDetail } from "../hooks/state";
+import { useIsLoggedIn, useUserDetail } from "../hooks/state";
 const AppRouter = () => {
-  const user = useUserDetail()
-
+  const user = useUserDetail();
   return (
     <>
       <BrowserRouter>
@@ -21,13 +20,24 @@ const AppRouter = () => {
               element={<PublicWrapper {...route} />}
             />
           ))}
-          {PrivateRoutes.map((route) => (
-            <Route
-              path={route.path}
-              key={`Route-${route.path}`}
-              element={<AuthWrapper {...route} userDetail={user} />}
-            />
-          ))}
+          {PrivateRoutes.map(
+            (route) => {
+              return (
+                <Route
+                  path={route.path}
+                  key={`Route-${route.path}`}
+                  element={<AuthWrapper {...route} userDetail={user} />}
+                />
+              );
+            }
+            // user?.role === route?.role && (
+            //   <Route
+            //     path={route.path}
+            //     key={`Route-${route.path}`}
+            //     element={<AuthWrapper {...route} userDetail={user} />}
+            //   />
+            // )
+          )}
           {/* All the private routes */}
 
           {/* 404 page route */}

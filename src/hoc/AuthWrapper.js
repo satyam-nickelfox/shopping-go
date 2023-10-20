@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useIsLoggedIn } from "../hooks/state"; 
+import { useIsLoggedIn } from "../hooks/state";
 import PrivateLayout from "../layout/privateLayout";
 
 const AuthWrapper = ({ component: Component, userDetail, ...rest }) => {
   const isLoggedIn = useIsLoggedIn();
-
   const Wrapper = (props) => {
-    if (rest.path === "/" && !isLoggedIn) {
+    if (!isLoggedIn) {
       return <Navigate to="/login" />;
     }
 
-    if (isLoggedIn) {
-      // restrict route for subadmin based on permission
-      return (
-        <PrivateLayout {...props}>
-          <Component {...props} />
-        </PrivateLayout>
-      );
-    } else {
-      return <Navigate to={{ pathname: "/login" }} />;
+    if (rest.role !== userDetail?.role) {
+      return <Navigate to={{ pathname: "/" }} />;
     }
+
+    return (
+      <PrivateLayout {...props}>
+        <Component {...props} />
+      </PrivateLayout>
+    );
   };
 
   return <Wrapper />;

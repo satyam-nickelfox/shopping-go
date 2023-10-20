@@ -1,14 +1,15 @@
 import React from "react";
 import { ProductService } from "../../network/productService";
 
-function ProductCard({ product }) {
-  const { productImage, productName, productPrice, productDescription } =
+function ProductCard({ product, setLoading }) {
+  const { _id, productImage, productName, productPrice, productDescription } =
     product;
-
   const handleBuyNow = async () => {
+    setLoading(true);
     let body = {
       productName: productName,
       productPrice: productPrice,
+      productId: _id,
     };
     let checkoutSession = await ProductService.createCheckout(body);
 
@@ -18,8 +19,11 @@ function ProductCard({ product }) {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      setLoading(false);
     } else {
       console.log("error", checkoutSession);
+      setLoading(false);
+      alert("error : something went wrong");
     }
   };
   return (

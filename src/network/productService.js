@@ -11,4 +11,8 @@ export class ProductService {
     const instance = NetworkManager(API.PRODUCT.CHECKOUT);
     return await instance.request(payload);
   }
+  static async allTransaction() {
+    const instance = NetworkManager(API.PRODUCT.ALLTRANSACTION);
+    return await instance.request();
+  }
 }

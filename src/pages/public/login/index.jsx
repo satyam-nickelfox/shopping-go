@@ -21,7 +21,6 @@ function Login() {
   };
 
   function handleNavigate() {
-    console.log("here");
     navigate("/signup");
   }
 
@@ -33,7 +32,6 @@ function Login() {
       password: formData.password,
     };
     let response = await AuthService.loginByEmail(body);
-    // Check if password and confirmPassword match
     if (response.success) {
       let token = response?.data?.token;
       setCookie(CookieKeys.Auth, token.split(" ")[1], CookieOptions);
@@ -44,13 +42,13 @@ function Login() {
         })
       );
       setLoading(false);
-      if(response?.data?.loginUser?.role === "user"){
+      if (response?.data?.loginUser?.role === "user") {
         navigate("/user/dashboard");
-      }
-      else {
+      } else {
         navigate("/admin/dashboard");
       }
     } else {
+      alert(`Error : ${response?.message}`);
       setLoading(false);
       console.log("error");
     }

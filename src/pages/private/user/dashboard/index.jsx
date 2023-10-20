@@ -25,7 +25,11 @@ function Dashboard() {
       {loading && <Loader />}
       <div className="flex flex-wrap justify-center p-4">
         {products.map((product) => (
-          <ProductCard key={product?._id} product={product} />
+          <ProductCard
+            key={product?._id}
+            product={product}
+            setLoading={setLoading}
+          />
         ))}
       </div>
     </div>

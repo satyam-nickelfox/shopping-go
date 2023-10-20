@@ -1,34 +1,105 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../../../../component/ProductCard";
-import { ProductService } from "../../../../network/productService";
 import Loader from "../../../../component/Loader";
+import DataTable from "../../../../component/DataTable";
+import { ProductService } from "../../../../network/productService";
 function AdminDashboard() {
-  const [products, setProducts] = useState([]);
+  const [allRecord, setAllRecord] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const columns = [
+    {
+      id: "no",
+      label: "Sr No",
+    },
+    {
+      id: "customerName",
+      label: "Customer Name",
+    },
+    {
+      id: "customerEmail",
+      label: "Customer Email",
+    },
+    {
+      id: "productName",
+      label: "Product Name",
+    },
+    {
+      id: "productPrice",
+      label: "Product Price",
+    },
+    {
+      id: "paymentMethod",
+      label: "Payment Method",
+    },
+    {
+      id: "paymentStatus",
+      label: "Payment Status",
+    },
+  ];
   useEffect(() => {
-    getAllProduct();
+    getAllTransaction();
   }, []);
 
-  const getAllProduct = async () => {
+  const getAllTransaction = async () => {
     setLoading(true);
-    const listProduct = await ProductService.allProductList();
-    if (listProduct.success && listProduct.code === 200) {
-      setProducts(listProduct?.data?.listProduct);
+    let getTransaction = await ProductService.allTransaction();
+    if (getTransaction.code === 200 && getTransaction.success) {
+      setAllRecord(getTransaction?.data?.listTransaction);
       setLoading(false);
     } else {
+      setAllRecord([]);
       setLoading(false);
-      console.log("error");
     }
   };
+
+  function createData(
+    no,
+    customerName,
+    customerEmail,
+    productName,
+    productPrice,
+    paymentMethod,
+    paymentStatus
+  ) {
+    return {
+      no,
+      customerName,
+      customerEmail,
+      productName,
+      productPrice,
+      paymentMethod,
+      paymentStatus,
+    };
+  }
+
+  let recordData = [];
+
+  // eslint-disable-next-line no-unused-vars
+  let creatRow =
+    allRecord &&
+    allRecord.length > 0 &&
+    allRecord.map((list, i) => {
+      return recordData.push(
+        createData(
+          i + 1,
+          list?.user?.full_name,
+          list?.user?.email,
+          list?.product?.productName,
+          list?.product?.productPrice,
+          list?.paymentType,
+          list?.paymentStatus
+        )
+      );
+    });
+
   return (
     <div>
-      <h2>Admin Dashboard</h2>
       {loading && <Loader />}
-      {/* <div className="flex flex-wrap justify-center p-4">
-        {products.map((product) => (
-          <ProductCard key={product?._id} product={product} />
-        ))}
-      </div> */}
+      <h2 className="p-7">Admin Dashboard</h2>
+      <div className="p-7">
+        <DataTable data={recordData} columns={columns} pageSize={5} />
+      </div>
     </div>
   );
 }

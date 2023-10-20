@@ -14,6 +14,10 @@ export const API = {
   },
   PRODUCT: {
     ALLPRODUCT: new APIRouter("/product/productlist", HTTP_METHODS.GET),
-    CHECKOUT: new APIRouter("/product/create-checkout-session", HTTP_METHODS.POST),
+    CHECKOUT: new APIRouter(
+      "/product/create-checkout-session",
+      HTTP_METHODS.POST
+    ),
+    ALLTRANSACTION: new APIRouter("/product/alltransction", HTTP_METHODS.GET),
   },
 };
